@@ -15,7 +15,7 @@ class MockScheduler:
         })
         print(f"Job {job_name} added with schedule {schedule_expression}")
 
-    def run_job(
+    def run_jobs(
         self,
     ) -> None:
         for job in self.jobs:

@@ -5,12 +5,12 @@ import requests
 
 
 def is_automated_security_fixes_enabled(
-    repo: str,
-    username: str,
+    repo_name: str,
+    user_name: str,
     token: str,
 ) -> bool:
     r = requests.get(
-        url=f'https://api.github.com/repos/{username}/{repo}/automated-security-fixes',
+        url=f'https://api.github.com/repos/{user_name}/{repo_name}/automated-security-fixes',
         headers={
             'Accept': 'application/vnd.github+json',
             'Authorization': f'Bearer {token}',
@@ -25,11 +25,11 @@ def is_automated_security_fixes_enabled(
 
 def enable_automated_security_fixes(
     gh_client: github.Github,
-    repo: str,
-    username: str,
+    repo_name: str,
+    user_name: str,
 ) -> None:
     repo = gh_client.get_repo(
-        f'{username}/{repo}',
+        f'{user_name}/{repo_name}',
     )
 
     vuln_alerts_enabled = repo.enable_vulnerability_alert()
@@ -55,8 +55,8 @@ def main():
     gh_client = github.Github(auth=gh_auth)
 
     is_enabled = is_automated_security_fixes_enabled(
-        repo=repo_name,
-        username=user_name,
+        repo_name=repo_name,
+        user_name=user_name,
         token=token,
     )
     if not is_enabled:
@@ -65,8 +65,8 @@ def main():
         )
         enable_automated_security_fixes(
             gh_client=gh_client,
-            repo=repo_name,
-            username=user_name,
+            repo_name=repo_name,
+            user_name=user_name,
         )
 
     gh_client.close()
